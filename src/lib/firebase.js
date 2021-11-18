@@ -16,6 +16,6 @@ const firebase = initializeApp(firebaseConfig)
 const db = getFirestore(firebase)
 
 //* seeding database, do it only once
-//! seedDatabase(db)
+// seedDatabase(db)
 
 export { firebase, db }
