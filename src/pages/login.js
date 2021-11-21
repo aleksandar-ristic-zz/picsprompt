@@ -18,5 +18,9 @@ export default function Login() {
 		document.title = 'PropmtPics | Login'
 	}, [])
 
-	return <div>Hola los todos from login!</div>
+	return (
+		<div className='container flex mx-auto max-w-screen items-center h-screen'>
+			Hola los todos from login!
+		</div>
+	)
 }
