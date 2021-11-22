@@ -20,7 +20,21 @@ export default function Login() {
 
 	return (
 		<div className='container flex mx-auto max-w-screen items-center h-screen'>
-			Hola los todos from login!
+			<div className='flex w-3/5'>
+				<img
+					className='max-w-full'
+					src='/images/iphone-w-profile.jpg'
+					alt='iPhone with PropmtPics logo'
+				/>
+			</div>
+			<div className='flex flex-col w-2/5'>
+				<h2 className='flex justify-center w-full'>
+					<img src='/images/logo.svg' alt='PromptPics' className='' />
+				</h2>
+				{error && <p className='mb-4 text-xs text-red-primary'>{error}</p>}
+
+				<form onSubmit={handleLogin} method='POST'></form>
+			</div>
 		</div>
 	)
 }
