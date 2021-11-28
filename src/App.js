@@ -4,6 +4,7 @@ import * as ROUTES from './constants/routes'
 
 const loading = <p>Loading...</p>
 const Login = lazy(() => import('./pages/login'))
+const Signup = lazy(() => import('./pages/signup'))
 
 function App() {
 	return (
@@ -11,6 +12,7 @@ function App() {
 			<Suspense fallback={loading}>
 				<Routes>
 					<Route exact path={ROUTES.LOGIN} element={<Login />} />
+					<Route exact path={ROUTES.SIGNUP} element={<Signup />} />
 				</Routes>
 			</Suspense>
 		</Router>
