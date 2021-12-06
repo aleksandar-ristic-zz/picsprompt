@@ -53,22 +53,23 @@ export default function Login() {
 
 					<form onSubmit={handleLogin}>
 						<input
-							ref={emailRef}
-							aria-label='Enter your email'
+							ria-label='Enter your email'
 							type='email'
 							placeholder='Email'
 							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
 							onChange={({ target }) => setEmail(target.value)}
+							value={email}
 						/>
-
+						ref={emailRef}
+						a
 						<input
 							aria-label='Enter your password'
 							type='password'
 							placeholder='Password'
 							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
 							onChange={({ target }) => setPassword(target.value)}
+							value={password}
 						/>
-
 						<button
 							disabled={isInvalid}
 							type='submit'
@@ -83,7 +84,7 @@ export default function Login() {
 
 				<div className='w-full p-4 flex flex-col justify-center items-center border border-gray-primary rounded'>
 					<p className='text-sm'>
-						Don't have an account?{' '}
+						Don't have an account?
 						<Link className='font-bold text-blue-medium' to={ROUTES.SIGNUP}>
 							Create now.
 						</Link>

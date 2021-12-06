@@ -34,6 +34,8 @@ export default function Signup() {
 	const handleSignup = async e => {
 		e.preventDefault()
 
+		const usernameExists = await checkIfUsernameExist(username)
+
 		try {
 			await createUserWithEmailAndPassword(auth, email, password)
 			navigate.push(ROUTES.DASHBOARD)
@@ -74,6 +76,25 @@ export default function Signup() {
 							placeholder='Email'
 							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
 							onChange={({ target }) => setEmail(target.value)}
+							value={email}
+						/>
+
+						<input
+							aria-label='Enter your username'
+							type='text'
+							placeholder='Username'
+							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
+							onChange={({ target }) => setUsername(target.value)}
+							value={username}
+						/>
+
+						<input
+							aria-label='Enter your full name'
+							type='text'
+							placeholder='Full Name'
+							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
+							onChange={({ target }) => setFullName(target.value)}
+							value={fullName}
 						/>
 
 						<input
@@ -82,6 +103,7 @@ export default function Signup() {
 							placeholder='Password'
 							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
 							onChange={({ target }) => setPassword(target.value)}
+							value={password}
 						/>
 
 						<button
@@ -91,16 +113,16 @@ export default function Signup() {
 								isInvalid && `opacity-50`
 							}`}
 						>
-							Log In
+							Sign Up
 						</button>
 					</form>
 				</div>
 
 				<div className='w-full p-4 flex flex-col justify-center items-center border border-gray-primary rounded'>
 					<p className='text-sm'>
-						Don you have an account?{' '}
+						Do you have an account?{' '}
 						<Link className='font-bold text-blue-medium' to={ROUTES.LOGIN}>
-							Sign in here.
+							Log in here.
 						</Link>
 					</p>
 				</div>
