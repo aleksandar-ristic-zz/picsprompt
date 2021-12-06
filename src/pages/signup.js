@@ -1,7 +1,13 @@
 import { useContext, useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import FirebaseContext from '../context/firebase'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	updateProfile
+} from 'firebase/auth'
+import { doc, updateDoc } from 'firebase/firestore'
+import { checkIfUsernameExists } from '../services/firebase'
 import * as ROUTES from '../constants/routes'
 
 export default function Signup() {
@@ -34,15 +40,36 @@ export default function Signup() {
 	const handleSignup = async e => {
 		e.preventDefault()
 
-		const usernameExists = await checkIfUsernameExist(username)
+		const usernameExists = await checkIfUsernameExists(username)
 
-		try {
-			await createUserWithEmailAndPassword(auth, email, password)
-			navigate.push(ROUTES.DASHBOARD)
-		} catch (error) {
-			setEmail('')
-			setPassword('')
-			setError(error.message)
+		if (!usernameExists) {
+			try {
+				await createUserWithEmailAndPassword(auth, email, password)
+
+				await updateProfile(auth.currentUser, {
+					displayName: username
+				})
+
+				const userProfileRef = doc(firebase, 'users', auth.currentUser.uid)
+
+				await updateDoc(userProfileRef, {
+					userId: auth.currentUser.uid,
+					username: username.toLowerCase(),
+					fullName,
+					email: email.toLowerCase(),
+					following: [],
+					dateCreated: Date.now()
+				})
+
+				navigate.push(ROUTES.DASHBOARD)
+			} catch (error) {
+				setEmail('')
+				setFullName('')
+				setPassword('')
+				setError(error.message)
+			}
+		} else {
+			setError('That username is already taken, please try another.')
 		}
 	}
 
