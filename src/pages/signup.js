@@ -6,36 +6,24 @@ import {
 	createUserWithEmailAndPassword,
 	updateProfile
 } from 'firebase/auth'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 import { checkIfUsernameExists } from '../services/firebase'
 import * as ROUTES from '../constants/routes'
 
 export default function Signup() {
 	const navigate = useNavigate()
-	const { firebase } = useContext(FirebaseContext)
-	const auth = getAuth(firebase)
+	const { db } = useContext(FirebaseContext)
+	const auth = getAuth()
 
 	const [username, setUsername] = useState('')
 	const [fullName, setFullName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [repeatPassword, setRepeatPassword] = useState('')
 	const [error, setError] = useState('')
 
 	const emailRef = useRef()
 	const isInvalid =
-		password.length <= 6 ||
-		email.length <= 10 ||
-		username.length < 3 ||
-		repeatPassword <= 6
-
-	const handlePassword = () => {
-		if (repeatPassword.length >= 6 && password !== repeatPassword) {
-			return setError('Passwords do not match')
-		}
-
-		return setError('')
-	}
+		password.length <= 5 || email.length <= 10 || username.length <= 2
 
 	const handleSignup = async e => {
 		e.preventDefault()
@@ -50,18 +38,18 @@ export default function Signup() {
 					displayName: username
 				})
 
-				const userProfileRef = doc(firebase, 'users', auth.currentUser.uid)
+				const userProfileRef = doc(db, 'users', auth.currentUser.uid)
 
-				await updateDoc(userProfileRef, {
-					userId: auth.currentUser.uid,
+				await setDoc(userProfileRef, {
 					username: username.toLowerCase(),
 					fullName,
 					email: email.toLowerCase(),
 					following: [],
+					folowers: [],
 					dateCreated: Date.now()
 				})
 
-				navigate.push(ROUTES.DASHBOARD)
+				navigate(ROUTES.DASHBOARD)
 			} catch (error) {
 				setEmail('')
 				setFullName('')

@@ -1,10 +1,17 @@
-import { firebase } from '../lib/firebase'
-import { collection, query, where } from 'firebase/firestore'
+import { db } from '../lib/firebase'
+import { collection, query, where, getDocs } from 'firebase/firestore'
 
-const usersRef = collection(firebase, 'users')
+const usersRef = collection(db, 'users')
 
 export async function checkIfUsernameExists(username) {
-	const q = query(usersRef, where('username', '==', username))
+	let queriedUsers = []
+	const q = await query(usersRef, where('username', '==', username))
 
-	return q.docs.map(user => user.data().length > 0)
+	const querySnapshot = await getDocs(q)
+
+	querySnapshot.forEach(doc => {
+		queriedUsers = [...queriedUsers, doc.data()]
+	})
+
+	return queriedUsers
 }
