@@ -30,7 +30,7 @@ export default function Signup() {
 
 		const usernameExists = await checkIfUsernameExists(username)
 
-		if (!usernameExists) {
+		if (!usernameExists.length) {
 			try {
 				await createUserWithEmailAndPassword(auth, email, password)
 
@@ -52,6 +52,7 @@ export default function Signup() {
 				navigate(ROUTES.DASHBOARD)
 			} catch (error) {
 				setEmail('')
+				setUsername('')
 				setFullName('')
 				setPassword('')
 				setError(error.message)
