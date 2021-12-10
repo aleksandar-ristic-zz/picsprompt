@@ -6,6 +6,7 @@ const loading = <p>Loading...</p>
 const Login = lazy(() => import('./pages/login'))
 const Signup = lazy(() => import('./pages/signup'))
 const NotFound = lazy(() => import('./pages/not-found'))
+const Dashboard = lazy(() => import('./pages/dashboard'))
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 				<Routes>
 					<Route exact path={ROUTES.LOGIN} element={<Login />} />
 					<Route exact path={ROUTES.SIGNUP} element={<Signup />} />
+					<Route exact path={ROUTES.DASHBOARD} element={<Dashboard />} />
 					<Route element={<NotFound />} />
 				</Routes>
 			</Suspense>
