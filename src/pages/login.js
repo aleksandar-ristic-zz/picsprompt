@@ -30,7 +30,7 @@ export default function Login() {
 	}
 
 	useEffect(() => {
-		document.title = 'PropmtPics | Login'
+		document.title = 'PromptPics | Login'
 		emailRef.current.focus()
 	}, [])
 
@@ -59,9 +59,8 @@ export default function Login() {
 							className='w-full h-2 mr-3 py-5 px-4 mb-2 border border-gray-primary rounded text-sm text-gray-base'
 							onChange={({ target }) => setEmail(target.value)}
 							value={email}
+							ref={emailRef}
 						/>
-						ref={emailRef}
-						a
 						<input
 							aria-label='Enter your password'
 							type='password'
