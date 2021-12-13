@@ -1,9 +1,15 @@
 import { db } from '../lib/firebase'
-import { collection, query, where, getDocs } from 'firebase/firestore'
-
-const usersRef = collection(db, 'users')
+import {
+	collection,
+	query,
+	where,
+	getDocs,
+	doc,
+	getDoc
+} from 'firebase/firestore'
 
 export async function checkIfUsernameExists(username) {
+	const usersRef = collection(db, 'users')
 	let queriedUsers = []
 	const q = await query(usersRef, where('username', '==', username))
 
@@ -14,4 +20,15 @@ export async function checkIfUsernameExists(username) {
 	})
 
 	return queriedUsers
+}
+
+export async function getUserByUserId(userId) {
+	const docRef = doc(db, 'users', userId)
+	const docSnap = await getDoc(docRef)
+
+	if (docSnap.exists()) {
+		return docSnap
+	} else {
+		return null
+	}
 }
