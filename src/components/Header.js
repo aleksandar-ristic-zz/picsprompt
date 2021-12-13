@@ -69,9 +69,34 @@ export function Header() {
 										/>
 									</svg>
 								</button>
+								<Link to={`/p/${user.displayName}`}>
+									<img
+										className='w-8 h-8 flex rounded-full'
+										src={`/images/avatars/${user.displayName}.jpg`}
+										alt={`${user.displayName} profile`}
+									/>
+								</Link>
 							</>
 						) : (
-							<></>
+							<>
+								<Link to={ROUTES.LOGIN}>
+									<button
+										type='button'
+										className='w-20 h-8 bg-blue-medium font-bold text-sm rounded'
+									>
+										Log In
+									</button>
+								</Link>
+
+								<Link to={ROUTES.SIGNUP}>
+									<button
+										type='button'
+										className='w-20 h-8 text-blue-medium font-bold rounded'
+									>
+										Sign Up
+									</button>
+								</Link>
+							</>
 						)}
 					</div>
 				</div>
