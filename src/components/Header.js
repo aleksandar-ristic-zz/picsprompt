@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { signOut } from 'firebase/auth'
+import { getAuth, signOut } from 'firebase/auth'
 import FirebaseContext from '../context/firebase'
 import UserContext from '../context/user'
 import * as ROUTES from '../constants/routes'
@@ -8,6 +8,8 @@ import * as ROUTES from '../constants/routes'
 export function Header() {
 	const { firebase } = useContext(FirebaseContext)
 	const { user } = useContext(UserContext)
+
+	const auth = getAuth()
 
 	return (
 		<header className='h-16 mb-8 bg-white border-b border-gray-primary'>
@@ -30,7 +32,7 @@ export function Header() {
 								<Link to={ROUTES.DASHBOARD} aria-label='Dashboard'>
 									<svg
 										xmlns='http://www.w3.org/2000/svg'
-										class='w-8 mr-6 text-black-light cursor-pointer'
+										className='w-8 mr-6 text-black-light cursor-pointer'
 										fill='none'
 										viewBox='0 0 24 24'
 										stroke='currentColor'
@@ -47,7 +49,7 @@ export function Header() {
 								<button
 									type='button'
 									title='Sign Out'
-									onClick={() => signOut()}
+									onClick={() => signOut(auth)}
 									onKeyDown={e => {
 										if (e.key === 'Enter') {
 											signOut()
@@ -56,7 +58,7 @@ export function Header() {
 								>
 									<svg
 										xmlns='http://www.w3.org/2000/svg'
-										class='h-6 w-6'
+										className='w-8 mr-6'
 										fill='none'
 										viewBox='0 0 24 24'
 										stroke='currentColor'
@@ -82,7 +84,7 @@ export function Header() {
 								<Link to={ROUTES.LOGIN}>
 									<button
 										type='button'
-										className='w-20 h-8 bg-blue-medium font-bold text-sm rounded'
+										className='w-20 h-8 bg-blue-medium font-bold text-white text-sm rounded'
 									>
 										Log In
 									</button>

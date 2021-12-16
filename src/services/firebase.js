@@ -8,6 +8,7 @@ import {
 	getDoc
 } from 'firebase/firestore'
 
+//? Check for username
 export async function checkIfUsernameExists(username) {
 	const usersRef = collection(db, 'users')
 	let queriedUsers = []
@@ -22,12 +23,13 @@ export async function checkIfUsernameExists(username) {
 	return queriedUsers
 }
 
+//? Get user by his Id
 export async function getUserByUserId(userId) {
 	const docRef = doc(db, 'users', userId)
 	const docSnap = await getDoc(docRef)
 
 	if (docSnap.exists()) {
-		return docSnap
+		return docSnap.data()
 	} else {
 		return null
 	}

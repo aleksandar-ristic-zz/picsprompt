@@ -21,7 +21,7 @@ export default function Login() {
 
 		try {
 			await signInWithEmailAndPassword(auth, email, password)
-			navigate.push(ROUTES.DASHBOARD)
+			navigate(ROUTES.DASHBOARD)
 		} catch (error) {
 			setEmail('')
 			setPassword('')
