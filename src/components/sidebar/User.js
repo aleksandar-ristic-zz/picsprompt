@@ -13,12 +13,12 @@ const User = ({ username, fullName }) =>
 		>
 			<div className='flex items-center justify-between col-span-1'>
 				<img
-					className='w-16 mr-3 rounded-full flex'
+					className='w-16 max-h-16 rounded-full flex'
 					src={`/images/avatars/${username}.jpg`}
 					alt={`${username} avatar`}
 				/>
 			</div>
-			<div className='col-span-3'>
+			<div className='col-span-3 ml-3'>
 				<p className='font-bold text-sm'>{username}</p>
 				<p className='text-sm'>{fullName}</p>
 			</div>

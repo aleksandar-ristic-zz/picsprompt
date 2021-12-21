@@ -11,6 +11,10 @@ export default function Suggestions({ userId }) {
 			const response = await getSuggestedProfiles(userId)
 			setProfiles(response)
 		}
+
+		if (userId) {
+			suggestedProfiles()
+		}
 	}, [userId])
 
 	return !profiles ? (
