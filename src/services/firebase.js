@@ -3,10 +3,13 @@ import {
 	collection,
 	query,
 	where,
-	getDocs,
+	limit,
 	doc,
 	getDoc,
-	limit
+	getDocs,
+	updateDoc,
+	arrayUnion,
+	arrayRemove
 } from 'firebase/firestore'
 
 //? Check for username
@@ -58,4 +61,34 @@ export async function getSuggestedProfiles(userId, following) {
 	}))
 
 	return profiles
+}
+
+//? update currently logged in user clicked users id
+export async function updateLoggedInUserFollowing(
+	loggedInUserDocId,
+	profileId,
+	isFollowingProfile //* expected boolean for current user.following and clicked user
+) {
+	const usersRef = doc(db, 'users', loggedInUserDocId)
+
+	return updateDoc(usersRef, {
+		following: isFollowingProfile
+			? arrayRemove(profileId)
+			: arrayUnion(profileId)
+	})
+}
+
+//? update clicked users followers, with current users id
+export async function updateFollowedUserFollowers(
+	profileDocId,
+	loggedInUserDocId,
+	isFollowingProfile //* expected boolean for current user and clicked user.followers
+) {
+	const usersRef = doc(db, 'users', profileDocId)
+
+	return updateDoc(usersRef, {
+		followers: isFollowingProfile
+			? arrayRemove(loggedInUserDocId)
+			: arrayUnion(loggedInUserDocId)
+	})
 }
