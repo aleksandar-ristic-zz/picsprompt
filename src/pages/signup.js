@@ -41,11 +41,12 @@ export default function Signup() {
 				const userProfileRef = doc(db, 'users', auth.currentUser.uid)
 
 				await setDoc(userProfileRef, {
+					userId: auth.currentUser.uid,
 					username: username.toLowerCase(),
 					fullName,
 					email: email.toLowerCase(),
-					following: [],
-					folowers: [],
+					following: [auth.currentUser.uid],
+					followers: [],
 					dateCreated: Date.now()
 				})
 

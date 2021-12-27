@@ -39,21 +39,18 @@ export async function getUserByUserId(userId) {
 //? Get suggested users by current user Id
 export async function getSuggestedProfiles(userId, following) {
 	const usersRef = collection(db, 'users')
-	let suggestedProfiles = []
-
-	let q = query(usersRef, where('userId', '==', userId), limit(10))
-	const querySnapshot = await getDocs(q)
-
-	querySnapshot.forEach(doc => {
-		suggestedProfiles = [...suggestedProfiles, doc.data()]
-	})
+	let q
 
 	if (following.length > 0) {
-		q = q.where('userId', 'not-in', [...following, userId])
+		q = query(usersRef, where('userId', 'not-in', [...following, userId]))
 	} else {
-		q = q.where('userId', '!=', userId)
+		q = query(usersRef, where('userId', '!=', userId), limit(10))
 	}
-	const result = await q.limit(10).get()
+
+	const result = await getDocs(q)
+	result.forEach(doc => {
+		console.log(doc.data())
+	})
 
 	const profiles = result.docs.map(user => ({
 		...user.data(),
@@ -61,8 +58,4 @@ export async function getSuggestedProfiles(userId, following) {
 	}))
 
 	return profiles
-
-	return suggestedProfiles.filter(
-		profile => profile.userId !== userId && !following.includes(profile.userId)
-	)
 }
