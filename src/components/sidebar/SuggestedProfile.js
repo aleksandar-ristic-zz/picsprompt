@@ -20,9 +20,9 @@ export default function SuggestedProfile({
 
 		// TODO firebase: 2 functions
 		// todo update array of logged in user
-		await updateLoggedInUserFollowing(loggedInUserDocId, profileId)
+		await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false)
 		// todo update the followers array of the user who has been followed
-		await updateFollowedUserFollowers(userDocId, userId)
+		await updateFollowedUserFollowers(userDocId, userId, false)
 	}
 
 	return !followed ? (
