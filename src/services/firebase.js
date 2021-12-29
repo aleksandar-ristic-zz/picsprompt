@@ -160,4 +160,11 @@ export async function isUserFollowingProfile(
 		where('following', 'array-contains', profileUserId)
 	)
 	const result = await getDocs(q)
+
+	const [response = {}] = result.docs.map(item => ({
+		...item.data(),
+		docId: item.id
+	}))
+
+	return response.userId
 }
