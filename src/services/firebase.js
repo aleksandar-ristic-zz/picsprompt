@@ -12,7 +12,7 @@ import {
 	arrayRemove
 } from 'firebase/firestore'
 
-//? Check for username
+//* Check for username
 export async function checkIfUsernameExists(username) {
 	const usersRef = collection(db, 'users')
 	let queriedUsers = []
@@ -24,10 +24,10 @@ export async function checkIfUsernameExists(username) {
 		queriedUsers = [...queriedUsers, doc.data()]
 	})
 
-	return queriedUsers
+	return queriedUsers.length > 0
 }
 
-//? Get user by his Id
+//* Get user by userId
 export async function getUserByUserId(userId) {
 	const docRef = doc(db, 'users', userId)
 	const docSnap = await getDoc(docRef)
@@ -39,7 +39,19 @@ export async function getUserByUserId(userId) {
 	}
 }
 
-//? Get suggested users by current user Id
+//* Get user by his username
+export async function getUserByUsername(username) {
+	const docRef = doc(db, 'users', username)
+	const docSnap = await getDoc(docRef)
+
+	if (docSnap.exists()) {
+		return docSnap.data()
+	} else {
+		return null
+	}
+}
+
+//* Get suggested users by current user Id
 export async function getSuggestedProfiles(userId, following) {
 	const usersRef = collection(db, 'users')
 	let q
@@ -51,9 +63,6 @@ export async function getSuggestedProfiles(userId, following) {
 	}
 
 	const result = await getDocs(q)
-	result.forEach(doc => {
-		console.log(doc.data())
-	})
 
 	const profiles = result.docs.map(user => ({
 		...user.data(),
@@ -63,11 +72,11 @@ export async function getSuggestedProfiles(userId, following) {
 	return profiles
 }
 
-//? update currently logged in user clicked users id
+//* update currently logged in user clicked users id
 export async function updateLoggedInUserFollowing(
 	loggedInUserDocId,
 	profileId,
-	isFollowingProfile //* expected boolean for current user.following and clicked user
+	isFollowingProfile //? expected boolean for current user.following and clicked user
 ) {
 	const usersRef = doc(db, 'users', loggedInUserDocId)
 
@@ -78,11 +87,11 @@ export async function updateLoggedInUserFollowing(
 	})
 }
 
-//? update clicked users followers, with current users id
+//* update clicked users followers, with current users id
 export async function updateFollowedUserFollowers(
 	profileDocId,
 	loggedInUserDocId,
-	isFollowingProfile //* expected boolean for current user and clicked user.followers
+	isFollowingProfile //? expected boolean for current user and clicked user.followers
 ) {
 	const usersRef = doc(db, 'users', profileDocId)
 
@@ -93,14 +102,14 @@ export async function updateFollowedUserFollowers(
 	})
 }
 
-//? get users photos
+//* get users photos
 export async function getPhotos(userId, following) {
 	const photosRef = doc(db, 'photos')
 
 	const q = query(photosRef, where('userId', 'in', following))
-
 	const result = await getDocs(q)
-	const userFollowedPhotos = result.doc.map(photo => ({
+
+	const userFollowedPhotos = result.docs.map(photo => ({
 		...photo.data(),
 		docId: photo.id
 	}))
@@ -121,4 +130,34 @@ export async function getPhotos(userId, following) {
 	)
 
 	return photosWithUserDetails
+}
+
+//* Get users photos by userId
+export async function getUserPhotosByUserId(userId) {
+	const photosRef = doc(db, 'photos')
+
+	const q = query(photosRef, where('userId', '==', userId))
+	const result = await getDocs(q)
+
+	const photos = result.docs.map(photo => ({
+		...photo.data(),
+		docId: photo.id
+	}))
+
+	return photos
+}
+
+//* Check if user is following profile
+export async function isUserFollowingProfile(
+	loggedInUserUsername, //? logged in user
+	profileUserId //? visited profile
+) {
+	const usersRef = doc(db, 'users')
+
+	const q = query(
+		usersRef,
+		where('username', '==', loggedInUserUsername),
+		where('following', 'array-contains', profileUserId)
+	)
+	const result = await getDocs(q)
 }
